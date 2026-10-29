@@ -1,0 +1,18 @@
+[Unit]
+Description=Group signal listener (Telegram -> signals/*.jsonl -> GitHub)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=tr
+WorkingDirectory=/home/tr/app
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/home/tr/venv/bin/python -B /home/tr/app/signal_listener.py
+Restart=always
+RestartSec=20
+# exit 3 = Telegram session not authorized: needs a manual re-login, do not loop
+RestartPreventExitStatus=3
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
